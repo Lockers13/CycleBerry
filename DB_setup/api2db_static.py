@@ -1,7 +1,5 @@
 import pandas as pd
-import json, urllib.request
 from sqlalchemy import create_engine
-import sys
 
 
 host = "rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com"
