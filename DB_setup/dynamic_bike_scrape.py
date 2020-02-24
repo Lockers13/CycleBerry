@@ -1,25 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-get_ipython().run_line_magic('pip', 'install mysql-connector')
 import requests
 import json
 import mysql.connector
 from pprint import pprint 
 
 
-# In[2]:
-
-
 URI = "https://api.jcdecaux.com/vls/v1/stations"
 APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
 CONTRACT = "dublin"
 
-
-# In[3]:
 
 
 mydb = mysql.connector.connect(
@@ -32,7 +20,6 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
-# In[ ]:
 
 
 import time
@@ -47,10 +34,5 @@ while True:
         mydb.commit()
         
     time.sleep(5*60)
-
-
-# In[ ]:
-
-
 
 
