@@ -61,7 +61,7 @@ def weather_query(lat, lon):
 
 # Call function using coordinates for Dublin City Center
 weather_query(53.34, -6.27)
-
+real_time = str(real_time).split()[1] if len(str(real_time).split()) > 1 else real_time
 try:
         # Connecting to databse
 
@@ -70,7 +70,7 @@ try:
     cursor = connection.cursor()
 
     cursor.execute("INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Wind_Speed, Wind_Degree, Day, Month, Year, True_Time, Weekday) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" 
-	    % (main, description, icon, temp, feels_like, temp_min, temp_max, wind_speed, wind_degree, day, month, year, str(real_time).split()[1], weekday))
+	    % (main, description, icon, temp, feels_like, temp_min, temp_max, wind_speed, wind_degree, day, month, year, real_time, weekday))
     connection.commit()
     cursor.close()
 
