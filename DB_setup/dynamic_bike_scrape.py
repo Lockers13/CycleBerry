@@ -2,7 +2,8 @@ import requests
 import json
 import mysql.connector
 from pprint import pprint 
-
+import sys
+import datetime
 
 URI = "https://api.jcdecaux.com/vls/v1/stations"
 APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
@@ -19,20 +20,18 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+res = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
+json_data = json.loads(res.text)
 
-
-
-import time
-while True:
-    r = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
-    p = json.loads(r.text)
-    for i in range(len(p)):
+query_string = "INSERT INTO DublinBikes.dynamic (number, available_stands, available_bikes, last_update, STATUS, real_date, real_time ) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+for i in range(len(json_data)):
+    dt = str(datetime.datetime.fromtimestamp(json_data[i]["last_update"]/1000.0))
+    values = (str(json_data[i]["number"]), str(json_data[i]["available_bike_stands"]), str(json_data[i]["available_bikes"]), str(json_data[i]["last_update"]), str(json_data[i]["status"]), dt.split()[0], dt.split()[1])
     
-        sql = "INSERT INTO DublinBikes.dynamic (number, available_stands, available_bikes, last_update, STATUS ) VALUES (%s, %s, %s, %s, %s)"
-        val = (str(p[i]["number"]), str(p[i]["available_bike_stands"]), str(p[i]["available_bikes"]), str(p[i]["last_update"]), str(p[i]["status"]))
-        mycursor.execute(sql, val)
-        mydb.commit()
+    mycursor.execute(query_string, values)
+    mydb.commit()
         
-    time.sleep(5*60)
 
+mycursor.close()
+mydb.close()
 
