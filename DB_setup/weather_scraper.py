@@ -5,11 +5,19 @@ from mysql.connector import Error
 from mysql.connector import errorcode
 from datetime import datetime, date
 import calendar
+import sys
 
-def weather_query(lat , lon):
-	res = requests.get('http://api.openweathermap.org/data/2.5/weather?lat='+str(lat)+'&lon='+str(lon)+'&appid=b1ee46f8fbe84528da68642cbfa3ff78&units=metric');
+host = 'rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com'
+database = 'DublinBikes'
+user='admin'
+password = 'chuckberry69'
+
+
+def weather_query(lat, lon):
+	res = requests.get('http://api.openweathermap.org/data/2.5/weather?lat='+str(
+	    lat)+'&lon='+str(lon)+'&appid=b1ee46f8fbe84528da68642cbfa3ff78&units=metric')
 	json_data = res.json()
-	#Need to be global to access outside
+	# Need to be global to access outside
 	global ID
 	global main
 	global description
@@ -28,11 +36,11 @@ def weather_query(lat , lon):
 	global month
 	global year
 	global time
-	#Setting variables for data in json_data
+	# Setting variables for data in json_data
 	ID = json_data['weather'][0]['id']
-	main = json_data['weather'][0]['main'];
-	description = json_data['weather'][0]['description'];
-	icon = json_data['weather'][0]['icon'];
+	main = json_data['weather'][0]['main']
+	description = json_data['weather'][0]['description']
+	icon = json_data['weather'][0]['icon']
 	temp = json_data['main']['temp']
 	feels_like = json_data['main']['feels_like']
 	temp_min = json_data['main']['temp_min']
@@ -45,28 +53,24 @@ def weather_query(lat , lon):
 	day = real_time.day
 	month = real_time.month
 	year = real_time.year
-	time = ("%02d:%02d:%02d" % (real_time.hour,real_time.minute,real_time.second))
+	time = ("%02d:%02d:%02d" % (real_time.hour, real_time.minute, real_time.second))
 	day_from_date = date.today()
 	weekday = calendar.day_name[day_from_date.weekday()]
 
 
-
-
-#Call function using coordinates for Dublin City Center
+# Call function using coordinates for Dublin City Center
 weather_query(53.34, -6.27)
 
-
-
-
 try:
-	#Connecting to databse
-    connection = mysql.connector.connect(host='rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com',
-                                         database='DublinBikes',
-                                         user='admin',
-                                         password='chuckberry69')
+	# Connecting to databse
+	print(real_time)
+		print(sql_query)
+	sys.exit(0)
+    connection = mysql.connector.connect(host=host, database=database, user=user, password=password)
+	cursor = connection.cursor()
+	sql_query = "INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Visibility, Wind_Speed, Wind_Degree, dt, Day, Month, Year, True_Time, Weekday) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % (main, description, icon, temp, feels_like, temp_min, temp_max, visibility, wind_speed, wind_degree, dt, day, month, year, real_time, weekday))
 
-    cursor = connection.cursor()
-    cursor.execute("INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Visibility, Wind_Speed, Wind_Degree, dt, Day, Month, Year, True_Time, Weekday) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" , (main, description, icon, temp, feels_like, temp_min, temp_max, visibility, wind_speed, wind_degree, dt, day, month, year, time, weekday))
+    cursor.execute("INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Visibility, Wind_Speed, Wind_Degree, dt, Day, Month, Year, True_Time, Weekday) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % (main, description, icon, temp, feels_like, temp_min, temp_max, visibility, wind_speed, wind_degree, dt, day, month, year, real_time, weekday))
     connection.commit()
     cursor.close()
 
@@ -74,25 +78,5 @@ except mysql.connector.Error as error:
     print("Failed to insert record into weather table {}".format(error))
 
 finally:
-    if (connection.is_connected()):
+    if connection.is_connected():
         connection.close()
-
-try:
-	#Connecting to databse
-    connection = mysql.connector.connect(host='rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com',
-                                         database='DublinBikes',
-                                         user='admin',
-                                         password='chuckberry69')
-
-    cursor = connection.cursor()
-    cursor.execute("INSERT INTO DublinBikes.weather (main, description, temp, feels_like, temp_min, temp_max, dt) VALUES (%s, %s, %s, %s, %s, %s, %s)" , (main, description, temp, feels_like, temp_min, temp_max, dt))
-    connection.commit()
-    cursor.close()
-
-except mysql.connector.Error as error:
-    print("Failed to insert record into weather table {}".format(error))
-
-finally:
-    if (connection.is_connected()):
-        connection.close()
-        #print("MySQL connection is closed")
