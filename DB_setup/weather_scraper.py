@@ -75,8 +75,8 @@ try:
     cursor.close()
 
 except mysql.connector.Error as error:
-    print("Failed to insert record into weather table {}".format(error))
-
+    with open('weather_db.log', 'a') as f:
+        f.write("{}\n\n".format(error))
 finally:
     if connection.is_connected():
         connection.close()
