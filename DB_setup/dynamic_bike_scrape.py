@@ -4,6 +4,7 @@ import mysql.connector
 from pprint import pprint 
 import sys
 import datetime
+from mysql.connector import Error
 
 URI = "https://api.jcdecaux.com/vls/v1/stations"
 APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
