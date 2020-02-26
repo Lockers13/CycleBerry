@@ -76,7 +76,7 @@ try:
 
 except mysql.connector.Error as error:
     with open('weather_db.log', 'a') as f:
-        f.write("{} : {}\n\n".format(error, datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))
+        f.write("{} : {}\n\n".format(error, datetime.now().strftime("%d/%m/%Y, %H:%M:%S")))
 finally:
     if connection.is_connected():
         connection.close()
