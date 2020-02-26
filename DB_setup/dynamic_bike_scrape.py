@@ -4,7 +4,6 @@ import mysql.connector
 from pprint import pprint 
 import sys
 import datetime
-import time
 
 URI = "https://api.jcdecaux.com/vls/v1/stations"
 APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
@@ -35,7 +34,7 @@ try:
         mydb.commit()
 except mysql.connector.Error as error:
     with open('dynamic_bikes.log', 'a') as f:
-        f.write("{} : {}\n\n".format(error, time.now()))
+        f.write("{} : {}\n\n".format(error, datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")))
 finally:
     mycursor.close()
     mydb.close()
