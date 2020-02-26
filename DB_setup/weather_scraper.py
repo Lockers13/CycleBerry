@@ -6,6 +6,7 @@ from mysql.connector import errorcode
 from datetime import datetime, date
 import calendar
 import sys
+import time
 
 host = 'rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com'
 database = 'DublinBikes'
@@ -76,7 +77,7 @@ try:
 
 except mysql.connector.Error as error:
     with open('weather_db.log', 'a') as f:
-        f.write("{}\n\n".format(error))
+        f.write("{} : {}\n\n".format(error, time.now()))
 finally:
     if connection.is_connected():
         connection.close()
