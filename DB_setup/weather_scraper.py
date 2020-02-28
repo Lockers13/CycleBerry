@@ -7,7 +7,7 @@ from datetime import datetime, date
 import calendar
 import sys
 
-host = 'rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com'
+host = 'rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com'
 database = 'DublinBikes'
 user = 'admin'
 password = 'chuckberry69'
