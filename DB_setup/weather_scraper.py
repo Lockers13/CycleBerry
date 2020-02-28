@@ -7,7 +7,7 @@ from datetime import datetime, date
 import calendar
 import sys
 
-host = 'rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com'
+host = 'rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com'
 database = 'DublinBikes'
 user = 'admin'
 password = 'chuckberry69'
@@ -69,8 +69,8 @@ try:
         host=host, database=database, user=user, password=password)
     cursor = connection.cursor()
 
-    cursor.execute("INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Wind_Speed, Wind_Degree, Day, Month, Year, True_Time, Weekday) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" 
-	    % (main, description, icon, temp, feels_like, temp_min, temp_max, wind_speed, wind_degree, day, month, year, real_time, weekday))
+    cursor.execute("INSERT INTO DublinBikes.testWeather (Main, Description, Icon, Temp, Feels_Like, Temp_Min, Temp_Max, Wind_Speed, Wind_Degree, Day, Month, Year, True_Time, Weekday, dt) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" 
+	    % (main, description, icon, temp, feels_like, temp_min, temp_max, wind_speed, wind_degree, day, month, year, real_time, weekday, dt))
     connection.commit()
     cursor.close()
 
