@@ -13,7 +13,7 @@ CONTRACT = "dublin"
 
 
 mydb = mysql.connector.connect(
-  host="rljdb.ctx6gghqwipv.us-east-1.rds.amazonaws.com",
+  host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
   user="admin",
   passwd="chuckberry69",
   database="DublinBikes"
