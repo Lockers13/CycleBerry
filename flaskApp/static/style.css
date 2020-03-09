@@ -1,0 +1,19 @@
+body{
+	margin:0px 0px 0px 0px;
+	background-color: red;
+}
+
+
+/* Set the size of the div element that contains the map */
+#map {
+	height: 500px;  /* The height is 400 pixels */
+	width: 60%;  /* The width is the width of the web page */
+	display:inline-block;
+	margin-top:50px;
+}
+
+/*Style for weather widget*/
+
+.weather {
+	margin: -500px 0px 0px 0px;
+}

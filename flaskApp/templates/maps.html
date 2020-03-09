@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script async defer 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap">
-</script>
-
-
-    <style>
-      /* Set the size of the div element that contains the map */
-      #map {
-        height: 500px;  /* The height is 400 pixels */
-        width: 50%;  /* The width is the width of the web page */
-        display:flex;
-       }
-    </style>
+    <title>MyFlaskApp</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
   </head>
+
   <body>
-    <h3>| Dublin Bikes Map |</h3>
- 
+    {% include 'includes/_navbar.html' %}
+    <h3 class="text-center" id="title">Cycle Berry</h3>
+    
+    <div class="container">  
+      
+      <div id="map"></div>
 
-    <div id="map"></div>
+      {% for i in myResult %}
+      <div class="d-flex justify-content-end weather">
+        <li class="list-group">
+          <ul>Main Weather: {{(i.Main)}}</ul>
+          <ul>Description: {{(i.Description)}}</ul>
+          <ul>Temperature: {{(i.Temp)}}</ul>
+          <ul>Minimum Temperature: {{(i.Temp_Min)}}</ul>
+          <ul>Maximum Temperature: {{(i.Temp_Max)}}</ul>
+          <ul>Time: {{(i.True_Time)}}</ul>
+        </li>
+      </div>
+      {% endfor %}
+
+    </div>
 
 
-    <script type="text/javascript"
-    src="{{ url_for('static', filename='map.js') }}">
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap"></script>
 
 
   </body>
 </html>
+
