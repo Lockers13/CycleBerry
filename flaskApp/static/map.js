@@ -39,7 +39,7 @@ function initMap(data) {
           });
           google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
-              infowindow.setContent(data.coordinates[i].num + ": " + data.coordinates[i].name);
+              infowindow.setContent(data.coordinates[i].num + ": " + data.coordinates[i].name + ". Available Bikes: " + data.coordinates[i].bikes + ". Available Stands: " + data.coordinates[i].stands);
               infowindow.open(map, marker);
             }
           })(marker, i));

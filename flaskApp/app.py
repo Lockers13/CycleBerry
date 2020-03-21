@@ -7,6 +7,7 @@ from flask import jsonify
 from flask import render_template, flash, redirect, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mysqldb import MySQL
+import requests
 
 app = Flask(__name__)
 
@@ -46,6 +47,15 @@ def index():
 
 @app.route('/api/coordinates')
 def coordinates():
+	
+	URI = "https://api.jcdecaux.com/vls/v1/stations"
+	APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
+	CONTRACT = "dublin"
+	
+	api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
+	occupancy_info = json.loads(api_request.text)
+	occupancy_info.pop(34)
+
 	mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
         user="admin",
@@ -60,12 +70,14 @@ def coordinates():
 	mycursor.execute(query_string)
 	rows = mycursor.fetchall()
 	all_coords = []
-	for row in rows:
+	for i, row in enumerate(rows):
 		address_details = {
 			'name': row[0],
 			'num': row[1],
 			'lat': row[2],
-			'lng': row[3]}
+			'lng': row[3],
+			'bikes': occupancy_info[i]['available_bikes'],
+			'stands': occupancy_info[i]['available_bike_stands'] }
 		all_coords.append(address_details)
 
 	mycursor.close()
@@ -78,3 +90,9 @@ def coordinates():
 if __name__ == '__main__':
 	app.run()
 	app.about()
+	
+	
+	
+	
+	
+	
