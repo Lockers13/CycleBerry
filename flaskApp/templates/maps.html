@@ -2,40 +2,56 @@
 <html>
 
   <head>
-    <title>MyFlaskApp</title>
+    <title>CycleBerry - Dublin City Bikes</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/style.css">
+    <!--External style sheet used for jqueryui-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   </head>
 
   <body>
     {% include 'includes/_navbar.html' %}
-    <h3 class="text-center" id="title">Cycle Berry</h3>
     
-    <div class="container">  
-      
-      <div id="map"></div>
+    <h3 class="text-center" id="title">Cycle Berry</h3>
 
-      {% for i in myResult %}
-      <div class="d-flex justify-content-end weather">
-        <li class="list-group">
-          <ul>Main Weather: {{(i.Main)}}</ul>
-          <ul>Description: {{(i.Description)}}</ul>
-          <ul>Temperature: {{(i.Temp)}}</ul>
-          <ul>Minimum Temperature: {{(i.Temp_Min)}}</ul>
-          <ul>Maximum Temperature: {{(i.Temp_Max)}}</ul>
-          <ul>Time: {{(i.True_Time)}}</ul>
-        </li>
+    <section class="main">
+      <div class="container">
+        <div class="float-left">
+          <div>
+            <input type="text" name="" id="stationtextbox" placeholder="Search for an address here..." />
+          </div>
+        </div>
+        <div class="imagebox">
+          <div id="map"></div>
+        </div>
+        <div class="float-right weatherInfo">
+          {% for i in myResult %}
+          <div class="d-flex justify-content-end weather">
+          <li class="list-group">
+            <ul>Main Weather: {{(i.Main)}}</ul>
+            <ul>Description: {{(i.Description)}}</ul>
+            <ul>Temperature: {{(i.Temp)}}</ul>
+            <ul>Minimum Temperature: {{(i.Temp_Min)}}</ul>
+            <ul>Maximum Temperature: {{(i.Temp_Max)}}</ul>
+            <ul>Time: {{(i.True_Time)}}</ul>
+          </li>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-
-    </div>
-
-
-    <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap"></script>
-
+    </section>
 
   </body>
+
+<script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap"></script> 
+<!--Next two are external and used mainly for search bar automation-->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="static/searchBar.js"></script>
+
+<script>
+
+  </script>
 </html>
 

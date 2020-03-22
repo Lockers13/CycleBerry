@@ -1,6 +1,5 @@
 body{
 	margin:0px 0px 0px 0px;
-	background-color: red;
 }
 
 
@@ -10,10 +9,40 @@ body{
 	width: 60%;  /* The width is the width of the web page */
 	display:inline-block;
 	margin-top:50px;
+	margin-left: 200px;
 }
 
 /*Style for weather widget*/
 
 .weather {
-	margin: -500px 0px 0px 0px;
+	margin: -510px -200px 0px 0px;
+
 }
+
+/*Basic positioning*/
+
+.gallerycontainer{
+	display:inline-block;
+	margin-top: 25px; 
+}
+
+.gallerycontainer div{
+	margin:10px 10px 10px 10px;
+	flex-basis: 30%;
+	text-align: center;
+}
+
+.gallerycontainer div figure{
+	font-size: 25px;
+}
+
+#stationtextbox{
+	margin-left: -200px;
+	margin-top: 50px;
+	width: 280px;
+}
+
+#stationtextbox input{
+	width: 100px;
+}
+
