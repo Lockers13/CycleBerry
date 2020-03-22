@@ -1,5 +1,7 @@
 var stationData = []
 
+var url = 'http://localhost:5000/api/coordinates';
+
 //Autocomplete feature
 
 fetch(url)
@@ -12,6 +14,7 @@ fetch(url)
   	for (var i = 0; i < data.coordinates.length; i++){
   		stationData.push(data.coordinates[i].name)
   	}
+    console.log(stationData);
   });
 
 //Use of jquer and jqueryui here
