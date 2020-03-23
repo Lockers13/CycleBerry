@@ -25,23 +25,22 @@ function initMap(data) {
             };
 
 
-            var image = {
-                url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-                // This marker is 20 pixels wide by 32 pixels high.
-                size: new google.maps.Size(20, 32),
-                // The origin for this image is (0, 0).
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32).
-                anchor: new google.maps.Point(0, 32)
-            };
+            var image1 = {url: 'http://maps.google.com/mapfiles/ms/icons/green.png'};
+            var image2 = {url: 'http://maps.google.com/mapfiles/ms/icons/orange.png'};
+            var image3 = {url: 'http://maps.google.com/mapfiles/ms/icons/red.png'};
+            var image_array = [image1, image2, image3];
+
 
             var markerList = []
             var coord_len = data.coordinates.length;
             for (i = 0; i < coord_len; i++) {
+                var num_bikes = data.coordinates[i].bikes;
+                var img_dex = num_bikes <= 20 ? (num_bikes <= 10 ? 2: 1): 0;
+
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng),
                     map: map,
-                    icon: image,
+                    icon: image_array[img_dex],
                     shape: shape,
                     title: data.coordinates[i].name
                 });

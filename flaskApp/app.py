@@ -89,7 +89,7 @@ def coordinates():
 
 if __name__ == '__main__':
 	app.run()
-	app.about()
+	#app.about() - just causes an exception to be thrown every time app is interrupted
 	
 	
 	
