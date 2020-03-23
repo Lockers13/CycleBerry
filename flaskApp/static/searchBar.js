@@ -14,7 +14,6 @@ fetch(url)
   	for (var i = 0; i < data.coordinates.length; i++){
   		stationData.push(data.coordinates[i].name)
   	}
-    console.log(stationData);
   });
 
 //Use of jquer and jqueryui here
