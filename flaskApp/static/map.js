@@ -35,7 +35,7 @@ function initMap(data) {
             var coord_len = data.coordinates.length;
             for (i = 0; i < coord_len; i++) {
                 var num_bikes = data.coordinates[i].bikes;
-                var img_dex = num_bikes <= 20 ? (num_bikes <= 10 ? 2: 1): 0;
+                var img_dex = num_bikes <= 10 ? (num_bikes <= 5 ? 2: 1): 0;
 
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng),
