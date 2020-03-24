@@ -32,17 +32,18 @@ toolbar = DebugToolbarExtension(app)
 
 @app.route('/')
 def index():
-	mycursor = mysqlinit.connection.cursor()
+	return render_template('maps.html')
+	# mycursor = mysqlinit.connection.cursor()
 
-	mycursor.execute("SELECT * FROM testWeather ORDER BY dt DESC LIMIT 1")
+	# mycursor.execute("SELECT * FROM testWeather ORDER BY dt DESC LIMIT 1")
 
-	myResult = mycursor.fetchall()
+	# myResult = mycursor.fetchall()
 
-	mycursor.execute("SELECT * FROM dynamic where last_update IN (select MAX(last_update)From DublinBikes.dynamic group by number);")
+	# mycursor.execute("SELECT * FROM dynamic where last_update IN (select MAX(last_update)From DublinBikes.dynamic group by number);")
 
-	dynamicBike = mycursor.fetchall()
+	# dynamicBike = mycursor.fetchall()
 
-	return render_template('maps.html', dynamicBike=dynamicBike , myResult=myResult)
+	
 
 
 @app.route('/api/coordinates')
