@@ -8,6 +8,7 @@ from flask import render_template, flash, redirect, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mysqldb import MySQL
 import requests
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -38,51 +39,55 @@ def index():
 
 	myResult = mycursor.fetchall()
 
-	mycursor.execute("SELECT * FROM dynamic where last_update IN (select MAX(last_update)From DublinBikes.dynamic group by number);")
-
-	dynamicBike = mycursor.fetchall()
-
-	return render_template('maps.html', dynamicBike=dynamicBike , myResult=myResult)
+	return render_template('maps.html', myResult=myResult)
 
 
 @app.route('/api/coordinates')
 def coordinates():
-	
-	URI = "https://api.jcdecaux.com/vls/v1/stations"
-	APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
-	CONTRACT = "dublin"
-	
-	api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
-	occupancy_info = json.loads(api_request.text)
-	occupancy_info.pop(34)
+    today_date = datetime.today().strftime('%Y-%m-%d')
 
-	mydb = mysql.connector.connect(
+    # URI = "https://api.jcdecaux.com/vls/v1/stations"
+    # APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
+    # CONTRACT = "dublin"
+
+    # api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
+    # occupancy_info = json.loads(api_request.text)
+    # occupancy_info.pop(34)
+
+    mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
         user="admin",
         passwd="chuckberry69",
         database="DublinBikes"
-	)
+    )
 
-	mycursor = mydb.cursor()
+    mycursor = mydb.cursor()
 
-	query_string = "SELECT Name, Number, Latitude, Longitude FROM DublinBikes.bikes_static"
+    query_string = "SELECT bs.Name, bs.Number, bs.Latitude, bs.Longitude," + \
+        "bd.available_bikes, bd.available_stands, bd.real_date, bd.real_time " + \
+        "FROM DublinBikes.bikes_static bs " + \
+        "JOIN DublinBikes.dynamic bd " + \
+        "ON bs.Number = bd.number " + \
+        "WHERE last_update IN (" + \
+	    "SELECT MAX(last_update) From DublinBikes.dynamic WHERE real_date = " + "'" + today_date + "'" + " group by number);"
 
-	mycursor.execute(query_string)
-	rows = mycursor.fetchall()
-	all_coords = []
-	for i, row in enumerate(rows):
-		address_details = {
-			'name': row[0],
-			'num': row[1],
-			'lat': row[2],
-			'lng': row[3],
-			'bikes': occupancy_info[i]['available_bikes'],
-			'stands': occupancy_info[i]['available_bike_stands'] }
-		all_coords.append(address_details)
+    mycursor.execute(query_string)
+    rows = mycursor.fetchall()
 
-	mycursor.close()
-	mydb.close()
-	return jsonify({'coordinates': all_coords})
+    all_coords = []
+    for i, row in enumerate(rows):
+        address_details = {
+            'name': row[0],
+            'num': row[1],
+            'lat': row[2],
+            'lng': row[3],
+            'bikes': row[4],
+            'stands': row[5]}
+        all_coords.append(address_details)
+
+    mycursor.close()
+    mydb.close()
+    return jsonify({'coordinates': all_coords})
 
 
 		
