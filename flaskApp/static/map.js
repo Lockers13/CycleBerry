@@ -54,7 +54,7 @@ function initMap(data) {
                         fetch(url_stats + data.coordinates[i].num)
                         .then(response => response.json())
                         .then(function (stat_id) {
-                            alert(stat_id.avg);
+                            //alert(stat_id.avg);
                         });
                     }
                 })(marker, i));

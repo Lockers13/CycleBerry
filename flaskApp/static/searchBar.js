@@ -1,4 +1,5 @@
-var stationData = []
+var stationData = [];
+var uniqueNames = [];
 
 var url = 'http://localhost:5000/api/coordinates';
 
@@ -9,12 +10,15 @@ fetch(url)
     return response.json();
   })
   .then((data) => {
-  	//Could include the working code outside fetch in here but is very messy
-  	//Will however be slower and will not run immediately because of this
   	for (var i = 0; i < data.coordinates.length; i++){
-  		stationData.push(data.coordinates[i].name)
+    //Prevent issue with duplicates station names, -1 returned if not in array
+    if(stationData.indexOf(data.coordinates[i].name) === -1) {
+      stationData.push(data.coordinates[i].name);
+      }
   	}
   });
+
+
 
 //Use of jquery and jqueryui here
  $( function() {
@@ -31,7 +35,6 @@ const inputBox = document.getElementById('stationtextbox');
 
 function findStation(){
   var station = inputBox.value;
-  alert(station);
 }
 
 
@@ -43,6 +46,8 @@ inputBox.addEventListener("keyup", function(event) {
    //document.getElementById("searchBtn").click();
   }
 });
+
+
 
 
 

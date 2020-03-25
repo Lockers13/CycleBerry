@@ -99,8 +99,23 @@ body{
 
 #stationtextbox{
 	align-self: center;
-	border: 2.5px solid #28A7E9; 
-	border-radius: 10px;
+	border:none;
+	background-color: #303030;
+	border-bottom: 1px solid #28A7E9;
+	color:#fff;
+	width:91%;
+}
+
+:-webkit-input-placeholder { /* Edge */
+  color: #fff;
+}
+
+:-ms-input-placeholder { /* Internet Explorer */
+  color: #fff;
+}
+
+::placeholder {
+  color: #fff;
 }
 
 
@@ -119,3 +134,19 @@ footer{
 	height:30px;
 	width: 30px;
 }
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    position:absolute;
+    width:22%;
+}
+
+.ui-autocomplete li{
+    background-color: #303030;
+    color: #fff;
+    border-bottom: 1px solid #28A7E9;
+}
+
