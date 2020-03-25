@@ -1,22 +1,21 @@
 // Initialize and add the map
 var url = 'http://localhost:5000/api/coordinates';
+var url_stats = "http://localhost:5000/api/station_stats/"
 
 function initMap(data) {
-    fetch(url)
+    var dublin = {
+        lat: 53.3498,
+        lng: -6.2603
+    };
+    var map = new google.maps.Map(
+        document.getElementById('map'), {
+            zoom: 14,
+            center: dublin,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+    fetch(url, map)
         .then(response => response.json())
         .then(function (data) {
-            var dublin = {
-                lat: 53.3498,
-                lng: -6.2603
-            };
-            var map = new google.maps.Map(
-                document.getElementById('map'), {
-                    zoom: 14,
-                    center: dublin,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-
-
             var infowindow = new google.maps.InfoWindow();
             var marker, i;
             var shape = {
@@ -49,8 +48,14 @@ function initMap(data) {
 
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
+                        
                         infowindow.setContent(data.coordinates[i].num + ": " + data.coordinates[i].name + ". Available Bikes: " + data.coordinates[i].bikes + ". Available Stands: " + data.coordinates[i].stands);
                         infowindow.open(map, marker);
+                        fetch(url_stats + data.coordinates[i].num)
+                        .then(response => response.json())
+                        .then(function (stat_id) {
+                            alert(stat_id.avg);
+                        });
                     }
                 })(marker, i));
             }
@@ -79,6 +84,5 @@ function initMap(data) {
             });
 
             /* Code for search bar functionality ends here */
-
         });
 }

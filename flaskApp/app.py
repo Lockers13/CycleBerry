@@ -9,6 +9,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_mysqldb import MySQL
 import requests
 from datetime import datetime
+from decimal import Decimal
 
 app = Flask(__name__)
 
@@ -41,6 +42,30 @@ def index():
 
 	return render_template('maps.html', myResult=myResult)
 
+
+
+@app.route('/api/station_stats/<int:station_id>')
+def stats(station_id):
+    mydb = mysql.connector.connect(
+        host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
+        user="admin",
+        passwd="chuckberry69",
+        database="DublinBikes"
+    )
+
+    mycursor = mydb.cursor()
+
+    query_string = "SELECT AVG(available_bikes)" + \
+        "FROM DublinBikes.dynamic " + \
+        "WHERE number = " + str(station_id) + ";"
+    mycursor.execute(query_string)
+    rows = mycursor.fetchall()
+    avg = str(round(float(rows[0][0])))
+    mycursor.close()
+    mydb.close()
+
+    return_string = "This is the station id: " + str(station_id)
+    return jsonify({'avg': avg})
 
 @app.route('/api/coordinates')
 def coordinates():
@@ -85,8 +110,7 @@ def coordinates():
             'stands': row[5]}
         all_coords.append(address_details)
 
-    mycursor.close()
-    mydb.close()
+
     return jsonify({'coordinates': all_coords})
 
 
