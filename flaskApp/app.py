@@ -49,13 +49,14 @@ def index():
 @app.route('/api/coordinates')
 def coordinates():
 	
-	URI = "https://api.jcdecaux.com/vls/v1/stations"
-	APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
-	CONTRACT = "dublin"
+	# URI = "https://api.jcdecaux.com/vls/v1/stations"
+	# APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
+	# CONTRACT = "dublin"
 	
-	api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
-	occupancy_info = json.loads(api_request.text)
-	occupancy_info.pop(34)
+	# api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
+	# occupancy_info = json.loads(api_request.text)
+	# occupancy_info.pop(34)
+
 
 	mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
@@ -66,7 +67,12 @@ def coordinates():
 
 	mycursor = mydb.cursor()
 
-	query_string = "SELECT Name, Number, Latitude, Longitude FROM DublinBikes.bikes_static"
+	query_string = "SELECT bs.Name, bs.Number, bs.Latitude, bs.Longitude, " + \
+		"bd.available_bikes, bd.available_stands " + \
+			"FROM DublinBikes.bikes_static bs " + \
+				"JOIN DublinBikes.dynamic bd " + \
+					"ON bs.Number = bd.number " + \
+						"GROUP BY bs.Number ORDER BY bd.last_update DESC;"
 
 	mycursor.execute(query_string)
 	rows = mycursor.fetchall()
@@ -77,8 +83,8 @@ def coordinates():
 			'num': row[1],
 			'lat': row[2],
 			'lng': row[3],
-			'bikes': occupancy_info[i]['available_bikes'],
-			'stands': occupancy_info[i]['available_bike_stands'] }
+			'bikes': row[4],
+			'stands': row[5]}
 		all_coords.append(address_details)
 
 	mycursor.close()

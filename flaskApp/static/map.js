@@ -2,7 +2,7 @@
 var url = 'http://localhost:5000/api/coordinates';
 
 function initMap(data) {
-    return fetch(url)
+    fetch(url)
         .then(response => response.json())
         .then(function (data) {
             var dublin = {
