@@ -89,13 +89,11 @@ def coordinates():
     mycursor = mydb.cursor()
 
     query_string = "SELECT bs.Name, bs.Number, bs.Latitude, bs.Longitude," + \
-        "bd.available_bikes, bd.available_stands, bd.real_date, bd.real_time " + \
+        "bdr.available_bikes, bdr.available_stands, bdr.real_date, bdr.real_time " + \
         "FROM DublinBikes.bikes_static bs " + \
-        "JOIN DublinBikes.dynamic bd " + \
-        "ON bs.Number = bd.number " + \
-        "WHERE last_update IN (" + \
-	    "SELECT MAX(last_update) From DublinBikes.dynamic WHERE real_date = " + "'" + today_date + "'" + " group by number);"
-
+        "JOIN DublinBikes.dynamic_most_recent bdr " + \
+        "ON bs.Number = bdr.number;"
+        
     mycursor.execute(query_string)
     rows = mycursor.fetchall()
 
