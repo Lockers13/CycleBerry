@@ -16,7 +16,7 @@ fetch(url)
   	}
   });
 
-//Use of jquer and jqueryui here
+//Use of jquery and jqueryui here
  $( function() {
     $( "#stationtextbox" ).autocomplete({
       source: stationData
@@ -44,6 +44,5 @@ inputBox.addEventListener("keyup", function(event) {
   }
 });
 
-function searchStation(){
-  console.log("Function is working")
-}
+
+

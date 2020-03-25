@@ -2,43 +2,57 @@
 <html>
 
   <head>
-    <title>CycleBerry - Dublin City Bikes</title>
+    <title>Cycle Berry | Dublin City Bikes</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/style.css">
     <!--External style sheet used for jqueryui-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="icon" href="../static/images/berry.svg">
   </head>
 
   <body>
     {% include 'includes/_navbar.html' %}
     
-    <h3 class="text-center" id="title">Cycle Berry</h3>
+    <!-- <h3 class="text-center" id="title">Cycle Berry</h3> -->
 
-    <section class="main">
-      <div class="container">
-        <div class="float-left">
-          <div>
-            <input type="text" name="" id="stationtextbox" placeholder="Search for an address here..." />
-          </div>
+    <div class="flex-container">
+      <div class="first">
+        <div>
+          <input type="text" name="" id="stationtextbox" placeholder="Search for an address here..." />
         </div>
+      </div>
+      <div class="second">
         <div class="imagebox">
           <div id="map"></div>
         </div>
-        <div class="float-right weatherInfo">
-          {% for i in myResult %}
-          <div class="d-flex justify-content-end weather">
-          <li class="list-group">
-            <ul>Main Weather: {{(i.Main)}}</ul>
-            <ul>Description: {{(i.Description)}}</ul>
-            <ul>Temperature: {{(i.Temp)}}</ul>
-            <ul>Minimum Temperature: {{(i.Temp_Min)}}</ul>
-            <ul>Maximum Temperature: {{(i.Temp_Max)}}</ul>
-            <ul>Time: {{(i.True_Time)}}</ul>
-          </li>
-        </div>
-        {% endfor %}
       </div>
-    </section>
+      <div class="third">
+        <div class="weatherInfo">
+          {% for i in myResult %}
+          <div class="weather">
+            <li class="list-group">
+              <ul id="weatherIcon"></ul>
+              <ul>Current Weather: {{(i.Description.capitalize())}}</ul>
+              <ul>Current Temp: {{(i.Temp)}} °C</ul>
+              <ul>Min Temp: {{(i.Temp_Min)}} °C</ul>
+              <ul>Max Temp: {{(i.Temp_Max)}} °C</ul>
+            </li>
+          </div>
+          {% endfor %}
+        </div>
+      </div>  
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a href="https://github.com/Lockers13/CycleBerry"><img class="github" src="../static/images/github.svg"></a>
+            </div>
+        </div>
+      </div>
+    </footer>
+
 
   </body>
 
@@ -49,6 +63,42 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="static/searchBar.js"></script>
+
+<script>
+
+  //Need to wait for weather information to be loaded so used in this script tag//
+
+  var iconPlace = document.getElementById("weatherIcon");
+
+  var possibleWeather = ["Clouds", "Rain", "Drizzle", "Clear", "Fog", "Mist", "Snow"];
+
+  var weatherResult = '{{ myResult[0].Main }}';
+
+  switch (weatherResult) {
+  case possibleWeather[0]:
+    iconPlace.innerHTML = "<img src=\"static/images/cloud.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[1]:
+    iconPlace.innerHTML = "<img src=\"static/images/rain.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[2]:
+    iconPlace.innerHTML = "<img src=\"static/images/drizzle.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[3]:
+    iconPlace.innerHTML = "<img src=\"static/images/sun.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[4]:
+    iconPlace.innerHTML = "<img src=\"static/images/fog.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[5]:
+    iconPlace.innerHTML = "<img src=\"static/images/mist.svg\" width=\"80px\" height=\"px\">";
+    break;
+  case possibleWeather[6]:
+    iconPlace.innerHTML = "<img src=\"static/images/snow.svg\" width=\"80px\" height=\"px\">";
+    break;
+}
+
+</script>
 
 </html>
 

@@ -32,31 +32,29 @@ toolbar = DebugToolbarExtension(app)
 
 @app.route('/')
 def index():
-	return render_template('maps.html')
-	# mycursor = mysqlinit.connection.cursor()
+	mycursor = mysqlinit.connection.cursor()
 
-	# mycursor.execute("SELECT * FROM testWeather ORDER BY dt DESC LIMIT 1")
+	mycursor.execute("SELECT * FROM testWeather ORDER BY dt DESC LIMIT 1")
 
-	# myResult = mycursor.fetchall()
+	myResult = mycursor.fetchall()
 
-	# mycursor.execute("SELECT * FROM dynamic where last_update IN (select MAX(last_update)From DublinBikes.dynamic group by number);")
+	mycursor.execute("SELECT * FROM dynamic where last_update IN (select MAX(last_update)From DublinBikes.dynamic group by number);")
 
-	# dynamicBike = mycursor.fetchall()
+	dynamicBike = mycursor.fetchall()
 
-	
+	return render_template('maps.html', dynamicBike=dynamicBike , myResult=myResult)
 
 
 @app.route('/api/coordinates')
 def coordinates():
 	
-	# URI = "https://api.jcdecaux.com/vls/v1/stations"
-	# APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
-	# CONTRACT = "dublin"
+	URI = "https://api.jcdecaux.com/vls/v1/stations"
+	APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
+	CONTRACT = "dublin"
 	
-	# api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
-	# occupancy_info = json.loads(api_request.text)
-	# occupancy_info.pop(34)
-
+	api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
+	occupancy_info = json.loads(api_request.text)
+	occupancy_info.pop(34)
 
 	mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
@@ -67,12 +65,7 @@ def coordinates():
 
 	mycursor = mydb.cursor()
 
-	query_string = "SELECT bs.Name, bs.Number, bs.Latitude, bs.Longitude, " + \
-		"bd.available_bikes, bd.available_stands " + \
-			"FROM DublinBikes.bikes_static bs " + \
-				"JOIN DublinBikes.dynamic bd " + \
-					"ON bs.Number = bd.number " + \
-						"GROUP BY bs.Number ORDER BY bd.last_update DESC;"
+	query_string = "SELECT Name, Number, Latitude, Longitude FROM DublinBikes.bikes_static"
 
 	mycursor.execute(query_string)
 	rows = mycursor.fetchall()
@@ -83,8 +76,8 @@ def coordinates():
 			'num': row[1],
 			'lat': row[2],
 			'lng': row[3],
-			'bikes': row[4],
-			'stands': row[5]}
+			'bikes': occupancy_info[i]['available_bikes'],
+			'stands': occupancy_info[i]['available_bike_stands'] }
 		all_coords.append(address_details)
 
 	mycursor.close()
@@ -96,10 +89,4 @@ def coordinates():
 
 if __name__ == '__main__':
 	app.run()
-	#app.about() - just causes an exception to be thrown every time app is interrupted
-	
-	
-	
-	
-	
-	
+	app.about()
