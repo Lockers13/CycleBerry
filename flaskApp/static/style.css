@@ -150,3 +150,19 @@ footer{
     border-bottom: 1px solid #28A7E9;
 }
 
+.ui-autocomplete li:hover{
+    background-color: #28A7E9 ;
+}
+
+
+
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
+}
+

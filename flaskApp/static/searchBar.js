@@ -42,8 +42,6 @@ function findStation(){
 inputBox.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   //findStation()
-   //document.getElementById("searchBtn").click();
   }
 });
 
