@@ -1,3 +1,4 @@
+
 var stationData = [];
 var uniqueNames = [];
 
@@ -31,7 +32,7 @@ fetch(url)
 
 //Search station feature
 
-const inputBox = document.getElementById('stationtextbox');
+/*const inputBox = document.getElementById('stationtextbox');
 
 function findStation(){
   var station = inputBox.value;
@@ -44,7 +45,7 @@ inputBox.addEventListener("keyup", function(event) {
    event.preventDefault();
   }
 });
-
+*/
 
 
 

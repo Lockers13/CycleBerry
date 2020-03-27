@@ -55,11 +55,12 @@
 
 
   </body>
-
+<!--mapStyle.js must be above map.js, using a global variable-->
+<script type="text/javascript" src="static/mapStyle.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap"></script> 
-<!--Next two are external and used mainly for search bar automation-->
+<!--Next two are external and used mainly for search bar automation, must be above searchBar.js-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="static/searchBar.js"></script>
