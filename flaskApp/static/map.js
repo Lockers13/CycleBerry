@@ -1,6 +1,6 @@
 // Initialize and add the map
 var url = 'http://localhost:5000/api/coordinates';
-var url_stats = "http://localhost:5000/api/station_stats/"
+var url_stats = "http://localhost:5000/api/station_stats/";
 
 
 function initMap(data) {
@@ -15,172 +15,14 @@ function initMap(data) {
             zoom: 14,
             center: dublin,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
+            //Following booleans get rid of many of the map buttons
             mapTypeControl: false,
             scaleControl: false,
             streetViewControl: false,
             rotateControl: false,
             fullscreenControl: false,
-           //Following styles array used to edit map colour
-            styles: [
-                {
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#f5f5f5"
-      }
-    ]
-  },
-                {
-                    "elementType": "labels.icon",
-                    "stylers": [
-                        {
-                            "visibility": "off"
-      }
-    ]
-  },
-                {
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#616161"
-      }
-    ]
-  },
-                {
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        {
-                            "color": "#f5f5f5"
-      }
-    ]
-  },
-                {
-                    "featureType": "administrative.land_parcel",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#bdbdbd"
-      }
-    ]
-  },
-                {
-                    "featureType": "poi",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#eeeeee"
-      }
-    ]
-  },
-                {
-                    "featureType": "poi",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#757575"
-      }
-    ]
-  },
-                {
-                    "featureType": "poi.park",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#e5e5e5"
-      }
-    ]
-  },
-                {
-                    "featureType": "poi.park",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#9e9e9e"
-      }
-    ]
-  },
-                {
-                    "featureType": "road",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#ffffff"
-      }
-    ]
-  },
-                {
-                    "featureType": "road.arterial",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#757575"
-      }
-    ]
-  },
-                {
-                    "featureType": "road.highway",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#dadada"
-      }
-    ]
-  },
-                {
-                    "featureType": "road.highway",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#616161"
-      }
-    ]
-  },
-                {
-                    "featureType": "road.local",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#9e9e9e"
-      }
-    ]
-  },
-                {
-                    "featureType": "transit.line",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#e5e5e5"
-      }
-    ]
-  },
-                {
-                    "featureType": "transit.station",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#eeeeee"
-      }
-    ]
-  },
-                {
-                    "featureType": "water",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#28A7E8"
-      }
-    ]
-  },
-                {
-                    "featureType": "water",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#28A7E8"
-      }
-    ]
-  }
-]
+           //Following styles using array in mapStyle.js
+            styles: mapStyle
         });
 
     fetch(url, map)
@@ -225,7 +67,7 @@ function initMap(data) {
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
 
-                        infowindow.setContent(data.coordinates[i].num + ": " + data.coordinates[i].name + ". Available Bikes: " + data.coordinates[i].bikes + ". Available Stands: " + data.coordinates[i].stands);
+                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes +  "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands);
                         infowindow.open(map, marker);
                         fetch(url_stats + data.coordinates[i].num)
                             .then(response => response.json())
@@ -242,11 +84,17 @@ function initMap(data) {
 
             function findStation() {
                 var station = inputBox.value;
-                //alert(station);
                 for (i = 0; i < markerList.length; i++) {
                     if (station == markerList[i].title) {
-                        infowindow.setContent(data.coordinates[i].num + ": " + data.coordinates[i].name + ". Available Bikes: " + data.coordinates[i].bikes + ". Available Stands: " + data.coordinates[i].stands);
+                        var latLng = new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng);
+                        map.setZoom(13);
+                        map.panTo(latLng);
+                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes +  "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands);
                         infowindow.open(map, markerList[i]);
+                        //Time out used to allow map to zoom out and back in smoothly on station search
+                        setTimeout(function() {
+                            map.setZoom(16);  
+                        }, 1000);
                     }
                 }
             }
