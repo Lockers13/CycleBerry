@@ -74,7 +74,7 @@ function initMap(data) {
 
                         infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes +  "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands); // + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>" );
                         infowindow.open(map, marker);
-                        fetch(url_stats + data.coordinates[i].num)
+                        fetch(url_stats + "daily_avgs/" + data.coordinates[i].num)
                             .then(response => response.json())
                             .then(function (stat_daily_avgs) {
                                 console.log(stat_daily_avgs);

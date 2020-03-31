@@ -7,9 +7,7 @@ from flask import jsonify
 from flask import render_template, flash, redirect, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mysqldb import MySQL
-import requests
 from datetime import datetime
-from decimal import Decimal
 
 app = Flask(__name__)
 
@@ -29,7 +27,6 @@ app.debug = True # Allows for changes without restarting the server
 app.config['SECRET_KEY'] = "123"
 toolbar = DebugToolbarExtension(app)
 
-
 def exec_sql(query_string):
     mycursor = mysqlinit.connection.cursor()
     mycursor.execute(query_string)
@@ -45,20 +42,19 @@ def index():
 
     return render_template('maps.html', myResult=myResult)
 
-@app.route('/api/station_stats/<int:station_id>')
-def stats(station_id):
-    day_list = [i for i in range(1, 8)]
-    day_dict = {'1': 'Sunday', '2': 'Monday', '3': 'Tuesday',
-                '4': 'Wednesday', '5': 'Thursday', '6': 'Friday', '7': 'Saturday'}
+@app.route('/api/station_stats/daily_avgs/<int:station_id>')
+def daily_avgs(station_id):
+    day_dict = {'1': 'sunday', '2': 'monday', '3': 'tuesday',
+                '4': 'wednesday', '5': 'thursday', '6': 'friday', '7': 'saturday'}
     day_avg_dict = {}
 
-    for i in day_list:
-        query_string = "SELECT AVG(available_bikes) as avg " + \
+    for i in range(1,8):
+        query_string = "SELECT AVG(available_bikes) as daily_avg " + \
             "FROM DublinBikes.dynamic " + \
             "WHERE number = " + str(station_id) + \
             " AND DAYOFWEEK(real_date) = " + str(i) + ";"
-        avg = exec_sql(query_string)[0]['avg']
-        avg = str(round(float(avg)))
+        avg = exec_sql(query_string)[0]['daily_avg']
+        avg = round(float(avg))
         day_avg_dict[day_dict[str(i)]] = avg
 
     return jsonify(day_avg_dict)
@@ -86,6 +82,27 @@ def coordinates():
         all_coords.append(address_details)
 
     return jsonify({'coordinates': all_coords})
+
+@app.route('/api/station_stats/hourly_avgs/<int:station_id>/<day_of_week>')
+def hourly_avgs(station_id, day_of_week):
+    dow = day_of_week.lower()
+    day_dict = {'sunday': '1', 'monday': '2', 'tuesday': '3',
+                'wednesday': '4', 'thursday': '5', 'friday': '6', 'saturday': '7'}
+    avghour_list = []
+
+    for hour in range(24):
+        hour = str(hour)
+        query_string = "SELECT AVG(available_bikes) as hourly_avg " + \
+            "FROM DublinBikes.dynamic " + \
+            "WHERE number = " + str(station_id) + \
+            " AND DAYOFWEEK(real_date) = " + day_dict[dow] + \
+            " AND EXTRACT(HOUR FROM real_time) = " + hour + ";"
+        avg = exec_sql(query_string)[0]['hourly_avg']
+        avg = round(float(avg))
+        avghour_list.append(avg)
+    
+    return jsonify({'hourly_avgs': avghour_list})
+
 
 if __name__ == '__main__':
     app.run()
