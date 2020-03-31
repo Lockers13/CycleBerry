@@ -121,7 +121,18 @@ function initMap(data) {
                 		radius: circles[circle].size
                     	});
                 	circleList.push(occupancyCircle);
-                }
+                	
+                	
+                	//add event listener for circle click (if click on circle: zoom into that circle to show markers)
+                    google.maps.event.addListener(occupancyCircle, "click", function(circles, circle){
+                    	return function(){
+                    	var latLngCircle = new google.maps.LatLng(circles[circle].center);
+                    	map.panTo(latLngCircle);
+                    	map.setZoom(15);
+                    }}(circles,circle)) //end of event listener
+                } 
+            
+            
             
             //add event listener for zoom event
             google.maps.event.addListener(map, "zoom_changed", function() {
