@@ -6,7 +6,7 @@ body{
 	overflow-x: hidden;
 }
 
-/* Header Styling */
+/*** Header Styling ***/
 
 .navbar-default
 	{
@@ -49,7 +49,7 @@ body{
 }
 
 
-/*Basic positioning*/
+/*** Basic positioning ***/
 
 .flex-container {
   display: flex;
@@ -64,19 +64,13 @@ body{
   padding: 2px;
 }
 
+		/*** First third of flex ***/
+
 .first {
 	width: 25%;
 	align-content: center;
 	text-align: center;
 	margin-left: -60px;
-}
-
-.second{
-	width: 50%;
-}
-
-.third{
-	width: 25%;
 }
 
 /* Styling for search bar */
@@ -90,9 +84,8 @@ body{
 	width:91%;
 }
 
-
 .ui-autocomplete {
-    max-height: 200px;
+    max-height: 180px;
     overflow-y: auto;
     /* prevent horizontal scrollbar */
     overflow-x: hidden;
@@ -122,6 +115,20 @@ body{
   color: #fff;
 }
 
+/* Basic chart styling */
+
+#myChart{
+	position: fixed;
+    bottom: 0;
+    margin-bottom: 50px;
+}
+
+		/*** Second third of flex ***/
+
+.second{
+	width: 50%;
+}
+
 /*Styling for google map */
 
 #map {
@@ -149,11 +156,27 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
 /*Styling for google maps window*/
 
+.gm-style .gm-style-iw-c button {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+}
 
-        
+		/*** Final third of flex ***/
+
+.third{
+	width: 25%;
+}
     
 
-/* Styling for footer */
+		/*** Styling for footer ***/
 
 footer{
 	background-color: #fff;
@@ -161,6 +184,8 @@ footer{
 	box-shadow: none;
 	margin: 0 !important;
 	bottom: 0;
+	position: fixed;
+	width: 100%;
 	height: 50px;
 	margin-top: 40px;
 }
