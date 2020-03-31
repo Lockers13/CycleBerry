@@ -46,6 +46,9 @@ def index():
 
 @app.route('/api/station_stats/<int:station_id>')
 def stats(station_id):
+    day_list = [i for i in range(1, 8)]
+    day_dict = {'1': 'Sunday', '2': 'Monday', '3': 'Tuesday', '4': 'Wednesday', '5': 'Thursday', '6': 'Friday', '7': 'Saturday'}
+    day_avg_dict = {}
     mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",
         user="admin",
@@ -54,30 +57,24 @@ def stats(station_id):
     )
 
     mycursor = mydb.cursor()
-
-    query_string = "SELECT AVG(available_bikes)" + \
+    for i in day_list:
+        query_string = "SELECT AVG(available_bikes)" + \
         "FROM DublinBikes.dynamic " + \
-        "WHERE number = " + str(station_id) + ";"
-    mycursor.execute(query_string)
-    rows = mycursor.fetchall()
-    avg = str(round(float(rows[0][0])))
+        "WHERE number = " + str(station_id) + " AND DAYOFWEEK(real_date) = " + str(i) + ";"
+        mycursor.execute(query_string)
+
+        row = mycursor.fetchall()
+        avg = str(round(float(row[0][0])))
+        day_avg_dict[day_dict[str(i)]] = avg
+
     mycursor.close()
     mydb.close()
 
-    return_string = "This is the station id: " + str(station_id)
-    return jsonify({'avg': avg})
+    return jsonify(day_avg_dict)
 
 @app.route('/api/coordinates')
 def coordinates():
     today_date = datetime.today().strftime('%Y-%m-%d')
-
-    # URI = "https://api.jcdecaux.com/vls/v1/stations"
-    # APIKEY = "bce2b3f93848e26b83b0d9aa1bbeb0142d8f11e1"
-    # CONTRACT = "dublin"
-
-    # api_request = requests.get(URI, params = {"contract":CONTRACT, "apiKey":APIKEY} )
-    # occupancy_info = json.loads(api_request.text)
-    # occupancy_info.pop(34)
 
     mydb = mysql.connector.connect(
         host="rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com",

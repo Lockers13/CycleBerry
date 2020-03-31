@@ -23,6 +23,9 @@ function initMap(data) {
            //Following styles using array in mapStyle.js
             styles: mapStyle
         });
+
+        
+    
     
     
     fetch(url, map)
@@ -69,12 +72,12 @@ function initMap(data) {
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
 
-                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes +  "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button> Daily Average </button> <br> <button>Get Prediction</button>" );
+                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes +  "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands); // + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>" );
                         infowindow.open(map, marker);
                         fetch(url_stats + data.coordinates[i].num)
                             .then(response => response.json())
-                            .then(function (stat_id) {
-                                //alert(stat_id.avg);
+                            .then(function (stat_daily_avgs) {
+                                console.log(stat_daily_avgs);
                             });
                     }
                 })(marker, i));
@@ -173,5 +176,7 @@ function initMap(data) {
             });
 
             /* Code for search bar functionality ends here */
+
+            
         });
 }
