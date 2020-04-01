@@ -11,24 +11,36 @@
   </head>
 
   <body>
+    <!-- Navbar from templates section -->
     {% include 'includes/_navbar.html' %}
     
-    <!-- <h3 class="text-center" id="title">Cycle Berry</h3> -->
-
+    <!-- Main part of page in container -->
     <div class="flex-container">
+      
+      <!-- Search Bar + CHart Section -->
       <div class="first">
         <div>
           <input type="text" name="" id="stationtextbox" placeholder="Search for an address here..." />
         </div>
-        <div class="chartSection">
-          <canvas id="myChart" width="300" height="250"></canvas>  
+        <div id="chartLoad">
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
         </div>
+        <div id="chartContainer">
+          <canvas id="myChart" width="300" height="250"></canvas>
+        </div> 
       </div>
+
+      <!-- Map Section -->
       <div class="second">
         <div class="imagebox">
           <div id="map"></div>
         </div>
       </div>
+      
+      <!-- Weather Section -->
       <div class="third">
         <div class="weatherInfo">
           {% for i in myResult %}
@@ -43,13 +55,10 @@
           </div>
           {% endfor %}
         </div>
-        <div class="chartSection">
-          <canvas id="myChart" width="300" height="300"></canvas>  
-        </div>
       </div>  
     </div>
-    <p id='test_p'></p>
 
+    <!-- Footer section -->
     <footer>
       <div class="container">
         <div class="row">
@@ -66,7 +75,7 @@
 <script type="text/javascript" src="static/mapStyle.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNt8B1GTS6HF65Jf_KfBqsWR-2KdUvkDY&callback=initMap"></script> 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPEzXY0-3TJDRduMnFFy-P9iislXN6wVc&callback=initMap"></script> 
 <!--Next two are external and used mainly for search bar automation, must be above searchBar.js-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -111,53 +120,7 @@
 }
 
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        datasets: [{
-            label: 'Station Name',
-            data: [12, 19, 3, 5, 2, 3, 9],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(54, 162, 235, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-     options: {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        fontColor: "white",
-        boxWidth:0
-      }
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
-});
+
 
 </script>
 
