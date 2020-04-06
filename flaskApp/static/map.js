@@ -1,6 +1,7 @@
 // Initialize and add the map
 var url = 'http://localhost:5000/api/coordinates';
 var url_stats = "http://localhost:5000/api/station_stats/";
+var url_hours = "http://localhost:5000/api/station_stats/hourly_avgs/";
 
 function initMap(data) {
 
@@ -67,71 +68,6 @@ function initMap(data) {
                 markerList.push(marker)
 
 
-                                //////// Code for chart function begins here ////////
-
-                function dailyChart (dataSet, stationName){
-                    var ctx = document.getElementById('myChart');
-                    dailyAvgs = [dataSet.monday, dataSet.tuesday, dataSet.wednesday, dataSet.thursday, dataSet.friday, dataSet.saturday, dataSet.sunday]
-                    ctx.getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                            datasets: [{
-                                label: stationName,
-                                /// Pass this variable in ///
-                                data: dailyAvgs,
-                                backgroundColor: [
-                                'rgba(255, 255, 255, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 255, 255, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 255, 255, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 255, 255, 0.2)'
-                            ],
-                                            borderColor: [
-                                'rgba(255, 255, 255, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 255, 255, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 255, 255, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 255, 255, 1)'
-                            ],
-                                            borderWidth: 1
-                        }]
-                        },
-                        options: {
-                            legend: {
-                                //Switch to false to remove station name
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    fontColor: "white",
-                                    boxWidth: 0
-                                }
-                            },
-                            scales: {
-                                xAxes: [{
-                                    ticks: {
-                                        fontColor:"white"
-                                    }
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        fontColor:"white"
-                                    }
-                                }]
-                            }
-                        }
-                    });
-                }
-
-
-                                //////// Code for chart function ends here ////////
-
                                 //////// Code for marker click function starts here ////////
 
 
@@ -141,21 +77,47 @@ function initMap(data) {
                         infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>");
                         infowindow.open(map, marker);
 
-                        //Code used to display chart when marker is clicked
-                        document.getElementById('chartContainer').style.display= 'none' ;
-                        document.getElementById('chartLoad').style.display= 'block' ;
+                        //Use of jquery here to select daily_avg button when it loads
+                        $(document).on('click','#daily_avg',function(){
+                            //Need to get the station number from marker
+                            var markName = marker.title;
+                            for (var i =0; i < data.coordinates.length; i++){
+                                if (markName == data.coordinates[i].name){
+                                    var stationNum = data.coordinates[i].num;
+                                }
+                            }
+                            //Need to get the day of the week
+                            var date = new Date(); 
+                            var day = date.getDay()
+                            var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+                            day = weekdays[day];
+
+                            //Fetch the data from url and make chart, functions in charts.js
+                            showLoader()
+                            fetch(url_hours + stationNum + "/" + day)
+                                .then(response => response.json())
+                                .then(function (stat_hourly_avgs){
+                                    //hourlyChart in charts.js
+                                    hourlyChart(stat_hourly_avgs.hourly_avgs, markName);
+                                    hideLoader()
+                                })
+                        })
+
+                        //Code used to display chart when marker is clicked, functions in charts.js
+                        showLoader();
                         fetch(url_stats + "daily_avgs/" + data.coordinates[i].num)
                             .then(response => response.json())
                             .then(function (stat_daily_avgs) {
+                                //dailyChart in charts.js
                                 dailyChart(stat_daily_avgs, data.coordinates[i].name);
-                                document.getElementById('chartLoad').style.display= 'none' ;
-                                document.getElementById('chartContainer').style.display= 'block' ;
+                                hideLoader();
                             });
                     }
                 })(marker, i));
             }
 
                             //////// Code for marker click function end here ////////
+
 
                             //////// Code for map circles starts here ////////
 
@@ -243,23 +205,21 @@ function initMap(data) {
                         var latLng = new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng);
                         map.setZoom(15);
                         map.panTo(latLng);
-                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button> Daily Average </button> <br> <button>Get Prediction</button>");
+                        infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>");
                         infowindow.open(map, markerList[i]);
                         //Time out creates a slower zooming effect, less jumpy
                         setTimeout(function () {
                             map.setZoom(17);
                         }, 1000);
 
-                        //Below is relevant for creating the graph when using search bar
-                        document.getElementById('chartContainer').style.display= 'none' ;
-                        document.getElementById('chartLoad').style.display= 'block' ;
+                        //Below is relevant for creating the graph when using search bar, functions in charts.js
+                        showLoader();
                         var stationName = data.coordinates[i].name;
                         fetch(url_stats + "daily_avgs/" + data.coordinates[i].num)
                             .then(response => response.json())
                             .then(function (stat_daily_avgs) {
                                 dailyChart(stat_daily_avgs, stationName);
-                                 document.getElementById('chartLoad').style.display= 'none' ; 
-                                 document.getElementById('chartContainer').style.display= 'block' ;
+                                hideLoader();
                             })
                     }
                 }
@@ -279,3 +239,8 @@ function initMap(data) {
 
         });
 }
+
+
+
+
+
