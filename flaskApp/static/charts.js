@@ -1,8 +1,9 @@
 function dailyChart (dataSet, stationName){
-                var ctx = document.getElementById('myChart');
+                var ctx = document.getElementById("myChart").getContext("2d");
+                if(window.bar != undefined)
+                    window.bar.destroy(); 
                 dailyAvgs = [dataSet.monday, dataSet.tuesday, dataSet.wednesday, dataSet.thursday, dataSet.friday, dataSet.saturday, dataSet.sunday]
-                ctx.getContext('2d');
-                var myChart = new Chart(ctx, {
+                window.bar = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -63,9 +64,10 @@ function dailyChart (dataSet, stationName){
             }
 
             function hourlyChart (dataSet, stationName){
-                var ctx = document.getElementById('myChart');
-                ctx.getContext('2d');
-                var myChart = new Chart(ctx, {
+                    var ctx = document.getElementById("myChart").getContext("2d");
+                    if(window.bar != undefined)
+                        window.bar.destroy(); 
+                    window.bar = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
