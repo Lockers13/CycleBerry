@@ -70,6 +70,8 @@ function initMap(data) {
 
                                 //////// Code for marker click function starts here ////////
 
+                ///Needed for both versions of hourly_avg graphs
+                var markName;
 
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
@@ -77,10 +79,11 @@ function initMap(data) {
                         infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>");
                         infowindow.open(map, marker);
 
+                        markName = marker.title;
+
                         //Use of jquery here to select daily_avg button when it loads
                         $(document).on('click','#daily_avg',function(){
-                            //Need to get the station number from marker
-                            var markName = marker.title;
+                            //Need to get the station number from 
                             for (var i =0; i < data.coordinates.length; i++){
                                 if (markName == data.coordinates[i].name){
                                     var stationNum = data.coordinates[i].num;
@@ -198,6 +201,8 @@ function initMap(data) {
 
             const inputBox = document.getElementById('stationtextbox');
 
+            
+
             function findStation() {
                 var station = inputBox.value;
                 for (i = 0; i < markerList.length; i++) {
@@ -212,6 +217,32 @@ function initMap(data) {
                             map.setZoom(17);
                         }, 1000);
 
+                        markName = markerList[i].title;
+
+                        $(document).on('click','#daily_avg',function(){
+                            //Need to get the station number from marker
+                            for (var i =0; i < data.coordinates.length; i++){
+                                if (markName == data.coordinates[i].name){
+                                    var stationNum = data.coordinates[i].num;
+                                }
+                            }
+                            //Need to get the day of the week
+                            var date = new Date(); 
+                            var day = date.getDay()
+                            var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+                            day = weekdays[day];
+
+                            //Fetch the data from url and make chart, functions in charts.js
+                            showLoader()
+                            fetch(url_hours + stationNum + "/" + day)
+                                .then(response => response.json())
+                                .then(function (stat_hourly_avgs){
+                                    //hourlyChart in charts.js
+                                    hourlyChart(stat_hourly_avgs.hourly_avgs, markName);
+                                    hideLoader()
+                                })
+                        });
+
                         //Below is relevant for creating the graph when using search bar, functions in charts.js
                         showLoader();
                         var stationName = data.coordinates[i].name;
@@ -223,7 +254,6 @@ function initMap(data) {
                             })
                     }
                 }
-                //Code to get graph on 
             }
 
             //Allows input box to be executed with enter key
@@ -239,8 +269,5 @@ function initMap(data) {
 
         });
 }
-
-
-
 
 
