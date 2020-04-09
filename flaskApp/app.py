@@ -102,6 +102,7 @@ def hourly_avgs(station_id, day_of_week):
         avghour_list.append(avg)
     
     return jsonify({'hourly_avgs': avghour_list})
+    
 
 
 if __name__ == '__main__':
