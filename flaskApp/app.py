@@ -8,6 +8,9 @@ from flask import render_template, flash, redirect, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mysqldb import MySQL
 from datetime import datetime
+import pickle
+import pandas as pd
+import sklearn
 
 app = Flask(__name__)
 
@@ -103,6 +106,23 @@ def hourly_avgs(station_id, day_of_week):
     
     return jsonify({'hourly_avgs': avghour_list})
 
+
+@app.route('/api/station_stats/predictions/<int:station_id>/<day_of_week>/<main_weather>/<float:temp>/<int:hour>')
+def get_prediction(station_id, day_of_week, main_weather, temp, hour):
+    day_of_week = day_of_week.lower()
+    day_dict = {'sunday': 1, 'monday': 2, 'tuesday': 3,
+                'wednesday': 4, 'thursday': 5, 'friday': 6, 'saturday': 7}
+    X_new = pd.DataFrame({'Main_Clear': [0], 'Main_Clouds': [0], 'Main_Drizzle': [0], 'Main_Fog': [0], 'Main_Mist': [0], 'Main_Rain': [0], 'Day': [0], 'Hour': [0], 'Temp': [0.0]})
+    X_new['Main_{0}'.format(main_weather)] = [1]
+    X_new['Day'] = [day_dict[day_of_week]]
+    X_new['Temp'] = [temp]
+    X_new['Hour'] = hour
+
+    loaded_model = pickle.load(open('db_models/station_model_{0}.sav'.format(str(station_id)), 'rb'))
+    prediction = int(round(loaded_model.predict(X_new)[0]))
+    return jsonify({'prediction': prediction})
+
+    
 
 if __name__ == '__main__':
     app.run()
