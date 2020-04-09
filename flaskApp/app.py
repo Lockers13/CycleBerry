@@ -40,7 +40,7 @@ def index():
     query_string = "SELECT * FROM testWeather ORDER BY dt DESC LIMIT 1"
     myResult = exec_sql(query_string)
 
-    return render_template('maps.html', myResult=myResult)
+    return render_template('index.html', myResult=myResult)
 
 @app.route('/api/station_stats/daily_avgs/<int:station_id>')
 def daily_avgs(station_id):
