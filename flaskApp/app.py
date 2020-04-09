@@ -123,7 +123,6 @@ def get_prediction(station_id, day_of_week, main_weather, temp, hour):
     prediction = 0 if prediction < 0 else prediction
     return jsonify({'prediction': prediction})
 
-1 if A else 2 if B else 3
     
 
 if __name__ == '__main__':
