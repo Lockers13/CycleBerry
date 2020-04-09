@@ -120,8 +120,10 @@ def get_prediction(station_id, day_of_week, main_weather, temp, hour):
 
     loaded_model = pickle.load(open('db_models/station_model_{0}.sav'.format(str(station_id)), 'rb'))
     prediction = int(round(loaded_model.predict(X_new)[0]))
+    prediction = 0 if prediction < 0 else prediction
     return jsonify({'prediction': prediction})
 
+1 if A else 2 if B else 3
     
 
 if __name__ == '__main__':
