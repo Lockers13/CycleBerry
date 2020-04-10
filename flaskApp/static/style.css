@@ -231,6 +231,44 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 .third{
 	width: 25%;
 }
+
+#predictForm{
+	display: none;
+	margin-top: 40px;
+}
+
+#formLoad {
+	position: fixed;
+    bottom: 0;
+    margin-bottom: 50px;
+    height:300px;
+    width:25%;
+    display: none;
+}
+
+.formInputBox{
+	align-self: center;
+	border:none;
+	background-color: #303030;
+	border-bottom: 1px solid #28A7E9;
+	color:#fff;
+	width:50%;
+}
+
+#formBtn{
+	border: 1px solid #28A7E9;
+}
+
+form {
+  text-align: center;
+  align-content: center;
+}
+
+form input{
+	margin: 10px 0px 10px 0px;
+}
+
+
    
 /*** Styling of recently used box ***/
 

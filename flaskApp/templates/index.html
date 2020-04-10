@@ -55,6 +55,21 @@
           </div>
           {% endfor %}
         </div>
+        <div id="formLoad">
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+        </div>
+        <div id="predictForm">
+          <form>
+            <p id="formName"></p>
+            <p id="formNum"></p>
+            <input type="text" id="weekdayBox" class="formInputBox" name="weekday" placeholder="Please enter weekday..."/>
+            <input type="text" id="timeBox" class="formInputBox" name="time" placeholder="Please enter time..."/>
+            <input type="button" id="formBtn" class="formInputBox" value="Predict Now..." placeholder="Predict Now..."/>
+          </form>
+        </div>
       </div>  
     </div>
     
@@ -91,6 +106,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="static/searchBar.js"></script>
+<script type="text/javascript" src="static/form.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
@@ -98,7 +114,7 @@
 
 <script>
 
-  //Need to wait for weather information to be loaded so used in this script tag//
+  //Placed here as myResult for weather is being sent to this html document
 
   var iconPlace = document.getElementById("weatherIcon");
 

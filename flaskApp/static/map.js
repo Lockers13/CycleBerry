@@ -119,6 +119,17 @@ function initMap() {
                                 })
                         })
 
+                        //Form display and information passing
+                        $(document).on('click','#prediction',function(){
+                            //Need to get the station number from marker
+                            for (var i =0; i < data.coordinates.length; i++){
+                                if (markName == data.coordinates[i].name){
+                                    var stationNum = data.coordinates[i].num;
+                                }
+                            }
+                            showForm(markName, stationNum);  
+                        });
+
                         //Code used to display chart when marker is clicked, functions in charts.js
                         showLoader();
                         fetch(url_stats + "daily_avgs/" + data.coordinates[i].num)
@@ -258,6 +269,21 @@ function initMap() {
                                     hideLoader()
                                 })
                         });
+
+
+                        //Form display and information passing, most of form code in form.js
+                        $(document).on('click','#prediction',function(){
+                            //Need to get the station number from marker
+                            for (var i =0; i < data.coordinates.length; i++){
+                                if (markName == data.coordinates[i].name){
+                                    var stationNum = data.coordinates[i].num;
+                                }
+                            }
+                            showForm(markName, stationNum);
+                           
+                        });
+
+
 
                         //Below is relevant for creating the graph when using search bar, functions in charts.js
                         showLoader();
