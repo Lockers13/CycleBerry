@@ -7,7 +7,6 @@ var url = 'http://localhost:5000/api/coordinates';
 var url_stats = "http://localhost:5000/api/station_stats/";
 var url_hours = "http://localhost:5000/api/station_stats/hourly_avgs/";
 
-
 // init Map function creates map . All code is contained in this function so as to have access to the map variable
 function initMap() {
 
@@ -55,13 +54,17 @@ function initMap() {
             var image3 = {
                 url: 'http://maps.google.com/mapfiles/ms/icons/red.png'
             };
-            var image_array = [image1, image2, image3]; // Colour will be decided based on the index of this array.
+            var image4 = {
+            	url: 'http://maps.google.com/mapfiles/kml/pal4/icon49.png'
+            }
+            var image_array = [image1, image2, image3, image4]; // Colour will be decided based on the index of this array.
 
             
             // Initialise variables that will be populated with for loop
             var bikes_at_station = {}; //this dictionary makes it easier to search for the number of bikes at any station
             var markerList = [];   //marker list to contain all markers made so that they can be accessed easily.
             var coord_len = data.coordinates.length; // This range allows one marker for every station.
+            
             
             // For loop creates all the markers using coordinates from the url fetched.
             for (i = 0; i < coord_len; i++) {
@@ -77,6 +80,17 @@ function initMap() {
                     title: data.coordinates[i].name,
                     visible: false
                 });
+                //modify the most recently used marker:
+                if (data.coordinates[i].name == localStorage.getItem("recent")){
+                	marker.visible = true;
+                	marker.icon = image_array[3];
+                	
+                	var infowindow = new google.maps.InfoWindow({
+                        content: "<b>Recently Used: </b><br><br>" + data.coordinates[i].name
+                      });
+                	
+                	infowindow.open(map, marker);
+                } 
                 markerList.push(marker)
 
 
@@ -90,6 +104,8 @@ function initMap() {
 
                         infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button id='daily_avg'> Hourly Averages </button> <br> <button id='prediction'>Get Prediction</button>");
                         infowindow.open(map, marker);
+                        localStorage.setItem("recent", data.coordinates[i].name);
+                        
 
                         markName = marker.title;
 
@@ -140,7 +156,7 @@ function initMap() {
                 })(marker, i));   //////// Code for marker click function end here  ////////
             } ///// Marker creation for loop ends here
             
-            
+          
 
             //////// Code for map circles starts here ///////
 
@@ -202,8 +218,13 @@ function initMap() {
                 // if zoom is less than 15 show only circles, else show only markers. This means only circles show on page load.
                 if (currentZoom < 15) {
                     for (var i in markerList) {
-                        markerList[i].setVisible(false);
+                    	console.log(markerList[i]);
+                    	if (markerList[i].title != localStorage.getItem("recent")){ // Prevents hiding of "recently used" marker
+                    		markerList[i].setVisible(false);
+                        	console.log(markerList[i].title);
+                    	}
                     }
+               
                     for (var i in circleList) {
                         circleList[i].setVisible(true);
                     }
@@ -225,7 +246,8 @@ function initMap() {
 
             //Using the info data given by user, this function pans out and then zooms into selected station
             function findStation() {
-                var station = inputBox.value;
+            	var station = inputBox.value;
+            	localStorage.setItem("recent", station);
                 for (i = 0; i < markerList.length; i++) {
                     if (station == markerList[i].title) {
                         var latLng = new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng);
@@ -307,6 +329,7 @@ function initMap() {
             });
 
             //////// Code for search bar functionality ends here ////////
+            
 
 
         });

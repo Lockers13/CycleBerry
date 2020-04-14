@@ -28,8 +28,6 @@ var stationNumber;
 
 //Used to display form after button click of prediction button
 function showForm (stationName, stationNum){
-  //Clear recently used feature
-	document.getElementById('recently_used').style.display= 'none';
   //Clear any error messages from previous forms
   document.getElementById('errorMessage').style.display = 'none';
   //Show new form

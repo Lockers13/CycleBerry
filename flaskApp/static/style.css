@@ -276,29 +276,6 @@ form input{
 }
 
 
-   
-/*** Styling of recently used box ***/
-
-#recently_used{
-	display: none;
-	position: absolute;
-	right: 62px;
-	top: 425px;
-	height: 200px;
-} 
-
-.recent_box{
-	list-style: none;
-	padding-right: 10%;
-	padding-left: 5px;
-	padding-bottom: 10px;
-}
-
-.recent_li{
-	padding-bottom: 10px;
-	padding-top: 10px;
-}
-
 		/*** Styling for footer ***/
 
 footer{
