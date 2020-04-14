@@ -45,7 +45,8 @@ submitBtn.addEventListener("click", function (event) {
 	fetch(urlStart + stationNumber + "/" + day + "/Clouds/15.0/" + time)
         .then(response => response.json())
         .then(function (prediction) {
-            alert(prediction.prediction);
+            document.getElementById('predictionResult').innerHTML = "Bikes Available: " + prediction.prediction
+            //alert(prediction.prediction);
         })   
 });
 

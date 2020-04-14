@@ -30,22 +30,6 @@ fetch(url)
 
 
 
-//Search station feature
-
-/*const inputBox = document.getElementById('stationtextbox');
-
-function findStation(){
-  var station = inputBox.value;
-}
-
-
-
-inputBox.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-   event.preventDefault();
-  }
-});
-*/
 
 
 

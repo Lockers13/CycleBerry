@@ -101,11 +101,8 @@ function initMap() {
                                     var stationNum = data.coordinates[i].num;
                                 }
                             }
-                            //Need to get the day of the week
-                            var date = new Date(); 
-                            var day = date.getDay()
-                            var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
-                            day = weekdays[day];
+                            //Need to get the day of the week, using fuction in charts.js
+                            getDay();
 
                             //Fetch the data from url and make chart, functions in charts.js
                             // NB - showLoader is used to show the user that something is happening - it is found in charts.js
@@ -232,19 +229,24 @@ function initMap() {
                 for (i = 0; i < markerList.length; i++) {
                     if (station == markerList[i].title) {
                         var latLng = new google.maps.LatLng(data.coordinates[i].lat, data.coordinates[i].lng);
+                        //zoom out
                         map.setZoom(15);
+                        //Move to location searched
                         map.panTo(latLng);
+                        //Set content window
                         infowindow.setContent("<b>" + data.coordinates[i].name + "</b>" + "<br/><b>" + " Available Bikes: " + "</b>" + data.coordinates[i].bikes + "<br/><b>" + " Available Stands: " + "</b>" + data.coordinates[i].stands + "<br> <button id='daily_avg'> Daily Average </button> <br> <button id='prediction'>Get Prediction</button>");
+                        //Open content window
                         infowindow.open(map, markerList[i]);
                         //Time out creates a slower zooming effect, less jumpy
-                        setTimeout(function () { //if action fails, set zoom to 17
+                        setTimeout(function () { 
+                            //Zoom in
                             map.setZoom(17);
                         }, 1000);
 
+
+                        //Variable has previously been declared in the marker click section
                         markName = markerList[i].title;
-                        
-                        // The below code is for showing station statistics when the user clicks on search result (as opposed
-                        // to clicking on a marker.
+                        // The below code is for showing station statistics when the user uses search bar
 
                         $(document).on('click','#daily_avg',function(){
                             //Need to get the station number from marker
@@ -253,12 +255,10 @@ function initMap() {
                                     var stationNum = data.coordinates[i].num;
                                 }
                             }
-                            //Need to get the day of the week
-                            var date = new Date(); 
-                            var day = date.getDay()
-                            var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
-                            day = weekdays[day];
-
+                            
+                            //Need to get the day of the week, function in charts.js
+                            getDay()
+                            
                             //Fetch the data from url and make chart, functions in charts.js
                             showLoader()
                             fetch(url_hours + stationNum + "/" + day)

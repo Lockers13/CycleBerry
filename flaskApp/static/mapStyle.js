@@ -1,5 +1,4 @@
 //Styling used to make the make white + grey
-
 var mapStyle = [
                 {
                     "elementType": "geometry",
@@ -161,6 +160,7 @@ var mapStyle = [
   }
 ]
 
+//Used for zoom out circles
 var circles = {
       heuston_south: {
         center: {lat: 53.341979, lng: -6.301860},

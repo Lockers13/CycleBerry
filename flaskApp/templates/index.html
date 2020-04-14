@@ -17,7 +17,7 @@
     <!-- Main part of page in container -->
     <div class="flex-container">
       
-      <!-- Search Bar + CHart Section -->
+      <!-- Search Bar + Chart Section -->
       <div class="first">
         <div>
           <input type="text" name="" id="stationtextbox" placeholder="Search for an address here..." />
@@ -40,7 +40,7 @@
         </div>
       </div>
       
-      <!-- Weather Section -->
+      <!-- Weather & form Section -->
       <div class="third">
         <div class="weatherInfo">
           {% for i in myResult %}
@@ -68,6 +68,7 @@
             <input type="text" id="weekdayBox" class="formInputBox" name="weekday" placeholder="Please enter weekday..."/>
             <input type="text" id="timeBox" class="formInputBox" name="time" placeholder="Please enter time..."/>
             <input type="button" id="formBtn" class="formInputBox" value="Predict Now..." placeholder="Predict Now..."/>
+            <p id="predictionResult"></p>
           </form>
         </div>
       </div>  

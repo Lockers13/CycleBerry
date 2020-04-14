@@ -1,5 +1,6 @@
 function dailyChart (dataSet, stationName){
                 var ctx = document.getElementById("myChart").getContext("2d");
+                //Gets rid of any currently showing charts
                 if(window.bar != undefined)
                     window.bar.destroy(); 
                 dailyAvgs = [dataSet.monday, dataSet.tuesday, dataSet.wednesday, dataSet.thursday, dataSet.friday, dataSet.saturday, dataSet.sunday]
@@ -11,6 +12,7 @@ function dailyChart (dataSet, stationName){
                             label: stationName,
                             /// Pass this variable in ///
                             data: dailyAvgs,
+                            //Select colour of bars and bar borders
                             backgroundColor: [
                             'rgba(255, 255, 255, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -63,7 +65,8 @@ function dailyChart (dataSet, stationName){
                 });
             }
 
-            function hourlyChart (dataSet, stationName){
+//Similar function to one above but for hourly average data instead of days
+function hourlyChart (dataSet, stationName){
                     var ctx = document.getElementById("myChart").getContext("2d");
                     if(window.bar != undefined)
                         window.bar.destroy(); 
@@ -160,7 +163,7 @@ function dailyChart (dataSet, stationName){
                 });
             }
 
-
+//Both hide and show loaders used to change visibility of the loader
 function showLoader (){
     document.getElementById('chartContainer').style.display= 'none' ;
     document.getElementById('chartLoad').style.display= 'block' ;
@@ -169,4 +172,15 @@ function showLoader (){
 function hideLoader (){
     document.getElementById('chartLoad').style.display= 'none' ;
     document.getElementById('chartContainer').style.display= 'block' ;
+}
+
+//Used to select day of the week to display correct chart
+
+var day;
+
+function getDay (){
+    var date = new Date(); 
+    day = date.getDay()
+    var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+    day = weekdays[day];
 }
