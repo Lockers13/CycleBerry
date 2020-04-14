@@ -10,6 +10,7 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 import pickle
 import pandas as pd
+import random
 
 
 app = Flask(__name__)
@@ -141,7 +142,7 @@ def get_prediction(station_id, day_of_week, main_weather, temp, hour):
     loaded_model = pickle.load(
         open('db_models/station_model_{0}.sav'.format(str(station_id)), 'rb')) # load the specified station model from disk
     prediction = int(round(loaded_model.predict(X_new)[0])) # make prediction on dataframe using model
-    prediction = 0 if prediction < 0 else 30 if prediction > 30 else prediction # artificially account for possibility of negative, and excessively large, positive predictions
+    prediction = 0 if prediction < 0 else 20 if prediction > 30 else prediction # artificially account for possibility of negative, and excessively large, positive predictions
 
     return jsonify({'prediction': prediction})
 
