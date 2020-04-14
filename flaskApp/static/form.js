@@ -28,27 +28,44 @@ var stationNumber;
 
 //Used to display form after button click of prediction button
 function showForm (stationName, stationNum){
+  //Clear recently used feature
 	document.getElementById('recently_used').style.display= 'none';
-    document.getElementById('predictForm').style.display= 'block';
-    document.getElementById('formName').innerHTML = stationName;
-    stationNumber = stationNum;
+  //Clear any error messages from previous forms
+  document.getElementById('errorMessage').style.display = 'none';
+  //Show new form
+  document.getElementById('predictForm').style.display= 'block';
+  //Add station name to form
+  document.getElementById('formName').innerHTML = stationName;
+  stationNumber = stationNum;
 }
+
 
 //Actual fetch of predictions given certain input data
 submitBtn.addEventListener("click", function (event) {
+  //Clear any error messages already in place
+  document.getElementById('errorMessage').style.display = 'none';
+  //Basic error handling
+  var dayTest = weekdays.includes(document.getElementById("weekdayBox").value)
+  var timeTest = times.includes(document.getElementById("timeBox").value)
+  if (dayTest == true && timeTest == true){
+  	//Getting values in form input boxes
+  	var day = document.getElementById("weekdayBox").value.toLowerCase();
+  	var time = document.getElementById("timeBox").value.slice(0,2);
 
-	//Getting values in form input boxes
-	var day = document.getElementById("weekdayBox").value.toLowerCase();
-	var time = document.getElementById("timeBox").value.slice(0,2);
-
-	//Doing actual fetch
-	fetch(urlStart + stationNumber + "/" + day + "/Clouds/15.0/" + time)
-        .then(response => response.json())
-        .then(function (prediction) {
-            document.getElementById('predictionResult').innerHTML = "Bikes Available: " + prediction.prediction
-            //alert(prediction.prediction);
-        })   
+  	//Doing actual fetch
+  	fetch(urlStart + stationNumber + "/" + day + "/Clouds/15.0/" + time)
+          .then(response => response.json())
+          .then(function (prediction) {
+              document.getElementById('predictionResult').innerHTML = "Bikes Available: " + prediction.prediction
+              errorHandling()
+          })   
+  } else {
+    //Display error message
+    document.getElementById('errorMessage').style.display = 'block';
+  }
 });
+
+
 
 
 

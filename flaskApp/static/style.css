@@ -234,7 +234,8 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
 #predictForm{
 	display: none;
-	margin-top: 40px;
+	margin-top: 30px;
+	margin-bottom: 0px;
 }
 
 #formLoad {
@@ -266,6 +267,12 @@ form {
 
 form input{
 	margin: 10px 0px 10px 0px;
+}
+
+#errorMessage{
+	font-size: 70%;
+	color: #28A7E9;
+	display: none;
 }
 
 
@@ -300,7 +307,7 @@ footer{
 	box-shadow: none;
 	margin: 0 !important;
 	bottom: 0;
-	position: fixed;
+	/*position: fixed;*/
 	width: 100%;
 	height: 50px;
 	margin-top: 40px;
