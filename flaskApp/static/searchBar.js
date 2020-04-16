@@ -1,8 +1,8 @@
 
 var stationData = [];
 var uniqueNames = [];
-
-var url = 'http://localhost:5000/api/coordinates';
+// replace (#, @) with (hostname, port) in url below
+var url = 'http://#:@/api/coordinates';
 
 //Autocomplete feature
 

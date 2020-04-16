@@ -11,17 +11,17 @@ from datetime import datetime
 import pickle
 import pandas as pd
 import random
-
+import os
 
 app = Flask(__name__)
 
 # Config MySql
-app.config['MYSQL_HOST'] = 'rljdb.cgvwbmfcg1yd.us-east-1.rds.amazonaws.com'
-app.config['MYSQL_USER'] = 'admin'
-app.config['MYSQL_PASSWORD'] = 'chuckberry69'
-app.config['MYSQL_DB'] = 'DublinBikes'
+app.config['MYSQL_HOST'] = os.getenv('RDS_HOST')
+app.config['MYSQL_USER'] = os.getenv('RDS_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('RDS_PWORD')
+app.config['MYSQL_DB'] = os.getenv('RDS_DBNAME')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = "123"
+app.config['SECRET_KEY'] = os.getenv('FLASK_KEY')
 
 mysqlinit = MySQL(app)  # Initialise SQL
 
@@ -148,4 +148,4 @@ def get_prediction(station_id, day_of_week, main_weather, temp, hour):
 
 # run the app
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

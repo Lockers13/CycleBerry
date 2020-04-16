@@ -3,9 +3,11 @@
 
 // We have created flask routes within the app that contain useful info from the Database
 // The 3 variables below are assigned the string urls of these routes
-var url = 'http://localhost:5000/api/coordinates';
-var url_stats = "http://localhost:5000/api/station_stats/";
-var url_hours = "http://localhost:5000/api/station_stats/hourly_avgs/";
+
+// Replace (#, @) with (public hostname, port)
+var url = "http://#:@/api/coordinates";
+var url_stats = "http://#:@/api/station_stats/";
+var url_hours = "http://#:@/api/station_stats/hourly_avgs/"; 
 
 // init Map function creates map . All code is contained in this function so as to have access to the map variable
 function initMap() {
