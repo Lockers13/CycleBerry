@@ -120,7 +120,7 @@ function initMap() {
                                 }
                             }
                             //Need to get the day of the week, using fuction in charts.js
-                            getDay();
+                            getDayCharts();
 
                             //Fetch the data from url and make chart, functions in charts.js
                             // NB - showLoader is used to show the user that something is happening - it is found in charts.js
@@ -281,7 +281,7 @@ function initMap() {
                             }
                             
                             //Need to get the day of the week, function in charts.js
-                            getDay()
+                            getDayCharts()
                             
                             //Fetch the data from url and make chart, functions in charts.js
                             showLoader()

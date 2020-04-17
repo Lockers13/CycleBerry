@@ -29,11 +29,11 @@ function forecastFetch (weatherDay, weatherTime, inputDay, inputTime) {
 
 
 //Need to get day of the week so can include five next days as option for prediction
-function getDay (){
+function getDays (){
     var date = new Date(); 
     day = date.getDay()
 }
-getDay();
+getDays();
 
 var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 //Need to create list of next five days as weather forecast is for five days

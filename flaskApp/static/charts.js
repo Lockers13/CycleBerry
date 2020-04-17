@@ -178,7 +178,7 @@ function hideLoader (){
 
 var day;
 
-function getDay (){
+function getDayCharts (){
     var date = new Date(); 
     day = date.getDay()
     var weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
