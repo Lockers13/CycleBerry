@@ -98,7 +98,7 @@ def coordinates():
 
 @app.route('/api/station_stats/hourly_avgs/<int:station_id>/<int:day_of_week>')
 def hourly_avgs(station_id, day_of_week):
-
+    day_of_week = 0 if day_of_week == 7 else day_of_week
     avghour_list = []
 
     for hour in range(24): # compute hourly average for a given day for hour in range 0-23 inclusive
