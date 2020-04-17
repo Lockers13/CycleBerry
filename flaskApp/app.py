@@ -96,12 +96,9 @@ def coordinates():
     return jsonify({'coordinates': all_coords})
 
 
-@app.route('/api/station_stats/hourly_avgs/<int:station_id>/<day_of_week>')
+@app.route('/api/station_stats/hourly_avgs/<int:station_id>/<int:day_of_week>')
 def hourly_avgs(station_id, day_of_week):
-    dow = day_of_week.lower()
-    # reverse day_dict seen above in order to faciliate conversion of day name into number for SQL query
-    day_dict = {'sunday': '1', 'monday': '2', 'tuesday': '3',
-                'wednesday': '4', 'thursday': '5', 'friday': '6', 'saturday': '7'}
+
     avghour_list = []
 
     for hour in range(24): # compute hourly average for a given day for hour in range 0-23 inclusive
@@ -109,7 +106,7 @@ def hourly_avgs(station_id, day_of_week):
         query_string = "SELECT AVG(available_bikes) as hourly_avg " + \
             "FROM DublinBikes.dynamic " + \
             "WHERE number = " + str(station_id) + \
-            " AND DAYOFWEEK(real_date) = " + day_dict[dow] + \
+            " AND DAYOFWEEK(real_date) = " + str(day_of_week + 1) + \
             " AND EXTRACT(HOUR FROM real_time) = " + hour + ";"
         avg = exec_sql(query_string)[0]['hourly_avg'] 
         avg = round(float(avg))

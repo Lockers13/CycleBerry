@@ -21,7 +21,6 @@ function forecastFetch (weatherDay, weatherTime, inputDay, inputTime) {
           .then(response => response.json())
           .then(function (prediction) {
               document.getElementById('predictionResult').innerHTML = "Bikes Available: " + prediction.prediction
-              errorHandling()
           })   
       }  
     }
