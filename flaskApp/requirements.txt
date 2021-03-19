@@ -46,7 +46,7 @@ decorator==4.4.0
 defusedxml==0.6.0
 dfply==0.3.3
 distributed==2.1.0
-Django==3.0.3
+Django==3.1.6
 docutils==0.14
 emoji==0.5.4
 entrypoints==0.3
